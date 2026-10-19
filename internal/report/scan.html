@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>磁碟掃描事實</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 15px/1.45 -apple-system, BlinkMacSystemFont, sans-serif; margin: 2rem; }
+  h1 { font-size: 1.4rem; }
+  .cards { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
+  .card { border: 1px solid #8884; border-radius: 8px; padding: 0.75rem 1rem; min-width: 10rem; }
+  .card b { display: block; font-size: 1.15rem; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border-bottom: 1px solid #8884; text-align: left; padding: 0.4rem 0.5rem; vertical-align: top; }
+  th { cursor: pointer; }
+  .num { text-align: right; white-space: nowrap; }
+  .note { color: #666; }
+  @media (prefers-color-scheme: dark) { .note { color: #aaa; } }
+</style>
+</head>
+<body>
+<h1>磁碟掃描事實</h1>
+<p class="note">這份報告只有路徑與配置大小，不判斷哪些該留、哪些可丟。名稱訊號與內容標記是掃描時看到的事實。</p>
+<p>掃描根目錄：{{.Root}}</p>
+<div class="cards">
+  <div class="card">容器總容量<b>{{fmt .Volume.ContainerSize}}</b></div>
+  <div class="card">可用空間<b>{{fmt .Volume.Free}}</b></div>
+  <div class="card">可清除空間<b>{{fmt .Volume.Purgeable}}</b></div>
+  <div class="card">作業系統本體<b>{{fmt .Volume.SystemVolume}}</b><span class="note">{{.Volume.SystemNote}}</span></div>
+  <div class="card">掃到的配置大小<b>{{fmt .ScannedAllocated}}</b><span class="note">{{.ScannedFiles}} 個檔案</span></div>
+</div>
+{{if .Volume.Error}}<p>未能讀取 diskutil：{{.Volume.Error}}</p>{{end}}
+{{if .FullDiskAccessHint}}<p>有些路徑在桌面、文件、郵件或訊息裡。若要掃到這些位置，請在已授予完整磁碟取用權限的終端機執行。</p>{{end}}
+{{if .Truncated}}<p>目錄筆數已達上限，較小的目錄沒有全部列入。</p>{{end}}
+{{if .UnreadableCount}}
+<h2>未能讀取（{{.UnreadableCount}}）</h2>
+<ul>
+{{range .Unreadable}}<li>{{.Path}}（{{.Error}}）</li>{{end}}
+</ul>
+{{end}}
+<h2>目錄</h2>
+<table id="dirs">
+<thead>
+<tr>
+  <th data-type="num">配置大小</th>
+  <th data-type="text">路徑</th>
+  <th data-type="num">檔案數</th>
+  <th data-type="num">目錄數</th>
+  <th data-type="text">名稱訊號</th>
+  <th data-type="text">內容標記</th>
+</tr>
+</thead>
+<tbody>
+{{range .Directories}}
+<tr>
+  <td class="num" data-sort="{{.Allocated}}">{{fmt .Allocated}}</td>
+  <td data-sort="{{.Path}}">{{.Path}}
+    {{if .Children}}<details><summary>子項目</summary><ul>
+      {{range .Children}}<li>{{if .IsDir}}目錄{{else}}檔案{{end}} {{.Name}}（{{fmt .Allocated}}）</li>{{end}}
+    </ul></details>{{end}}
+    {{if .Extensions}}<details><summary>副檔名</summary><ul>
+      {{range .Extensions}}<li>{{if .Ext}}{{.Ext}}{{else}}（無副檔名）{{end}} {{fmt .Allocated}}（{{.Count}}）</li>{{end}}
+    </ul></details>{{end}}
+  </td>
+  <td class="num" data-sort="{{.Files}}">{{.Files}}</td>
+  <td class="num" data-sort="{{.Dirs}}">{{.Dirs}}</td>
+  <td data-sort="{{join .NameSignals}}">{{if .NameSignals}}{{join .NameSignals}}{{else}}—{{end}}</td>
+  <td>{{markers .Markers}}</td>
+</tr>
+{{end}}
+</tbody>
+</table>
+<script>
+document.querySelectorAll("#dirs th").forEach(function (th, index) {
+  th.addEventListener("click", function () {
+    var tbody = document.querySelector("#dirs tbody");
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll("tr"));
+    var numeric = th.getAttribute("data-type") === "num";
+    var asc = th.getAttribute("data-asc") !== "1";
+    th.setAttribute("data-asc", asc ? "1" : "0");
+    rows.sort(function (a, b) {
+      var av = a.children[index].getAttribute("data-sort") || "";
+      var bv = b.children[index].getAttribute("data-sort") || "";
+      if (numeric) {
+        var an = Number(av), bn = Number(bv);
+        return asc ? an - bn : bn - an;
+      }
+      return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+    rows.forEach(function (row) { tbody.appendChild(row); });
+  });
+});
+</script>
+</body>
+</html>
