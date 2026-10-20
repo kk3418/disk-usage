@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"computer-usage/internal/dossier"
+	"disk-usage/internal/dossier"
 )
 
 func TestFormat(t *testing.T) {

@@ -1,6 +1,6 @@
 package walk
 
-import "computer-usage/internal/facts"
+import "disk-usage/internal/facts"
 
 // Entry is one directory entry returned by a reader.
 type Entry struct {

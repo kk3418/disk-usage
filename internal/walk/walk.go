@@ -6,7 +6,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"computer-usage/internal/facts"
+	"disk-usage/internal/facts"
 )
 
 const topFiles = 30

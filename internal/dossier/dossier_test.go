@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"computer-usage/internal/facts"
-	"computer-usage/internal/volume"
-	"computer-usage/internal/walk"
+	"disk-usage/internal/facts"
+	"disk-usage/internal/volume"
+	"disk-usage/internal/walk"
 )
 
 func TestBuildRollupHotZoneAndCap(t *testing.T) {

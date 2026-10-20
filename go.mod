@@ -1,4 +1,4 @@
-module computer-usage
+module disk-usage
 
 go 1.26.4
 

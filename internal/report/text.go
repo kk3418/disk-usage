@@ -5,8 +5,8 @@ import (
 	"io"
 	"strings"
 
-	"computer-usage/internal/dossier"
-	"computer-usage/internal/facts"
+	"disk-usage/internal/dossier"
+	"disk-usage/internal/facts"
 )
 
 // WriteTerminal prints a factual summary. It does not say what to keep or delete.

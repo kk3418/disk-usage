@@ -6,7 +6,7 @@ import (
 	"io"
 	"strings"
 
-	"computer-usage/internal/dossier"
+	"disk-usage/internal/dossier"
 )
 
 //go:embed scan.html

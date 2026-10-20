@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"computer-usage/internal/dossier"
-	"computer-usage/internal/report"
-	"computer-usage/internal/volume"
-	"computer-usage/internal/walk"
+	"disk-usage/internal/dossier"
+	"disk-usage/internal/report"
+	"disk-usage/internal/volume"
+	"disk-usage/internal/walk"
 )
 
 func main() {
