@@ -2,7 +2,7 @@
 
 [繁體中文](README.md)
 
-Scan a macOS disk and write directory allocated sizes plus content markers to `scan.json` and `scan.html`. The scan records facts. To separate leftover caches from folders you should judge yourself, have the repo’s `disk-analysis` skill read `scan.json`. This repo does not delete or move files.
+Scan a macOS disk and write directory allocated sizes plus content markers to `scan.json` and `scan.html`. The scan records facts. To list the files and folders to keep before reinstalling, have the repo’s `disk-analysis` skill read `scan.json`. This repo does not delete or move files.
 
 ## Requirements
 
@@ -49,7 +49,7 @@ Desktop, Documents, Downloads, Mail, and Messages need Full Disk Access for the 
 
 ## Analysis
 
-After a scan, ask the Cursor agent to follow the `disk-analysis` skill on `./disk-scan/scan.json`. The skill writes Traditional Chinese `analysis.md` beside the scan. It separates caches and leftovers that are usually safe to remove, folders you should judge, large directories worth keeping, and rebuildable dependency directories. If the scan file is already there and you did not ask for a rescan, analysis can start from that file.
+After a scan, ask the Cursor agent to follow the `disk-analysis` skill on `./disk-scan/scan.json`. The skill writes Traditional Chinese `analysis.md` beside the scan. It lists files and folders to copy off before a reinstall, app data to confirm, and caches or dependencies that a reinstall will recreate. If the scan file is already there and you did not ask for a rescan, analysis can start from that file.
 
 ## Tests
 

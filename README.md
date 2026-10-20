@@ -2,7 +2,7 @@
 
 [English](README.en.md)
 
-在 macOS 上掃描磁碟，把目錄的配置大小與內容標記寫成 `scan.json` 與 `scan.html`。掃描只記錄事實。要分辨通常可丟的軟體殘留、以及要自己判斷的資料夾，請再用專案裡的 `disk-analysis` skill 讀 `scan.json`。這個 repo 不刪除、不移動檔案。
+在 macOS 上掃描磁碟，把目錄的配置大小與內容標記寫成 `scan.json` 與 `scan.html`。掃描只記錄事實。要列出重灌前要保留的檔案與資料夾，請再用專案裡的 `disk-analysis` skill 讀 `scan.json`。這個 repo 不刪除、不移動檔案。
 
 ## 需要
 
@@ -49,7 +49,7 @@ go build -o diskusage ./cmd/diskusage
 
 ## 分析
 
-掃描完成後，在 Cursor 裡請 agent 依 `disk-analysis` skill 處理 `./disk-scan/scan.json`。skill 會在同一目錄寫出繁體中文 `analysis.md`，分開列出通常可丟的快取與殘留、要你判斷的資料夾、應保留的大戶，以及刪了可以重裝的依賴目錄。檔案已在且沒有要求重掃時，直接分析即可。
+掃描完成後，在 Cursor 裡請 agent 依 `disk-analysis` skill 處理 `./disk-scan/scan.json`。skill 會在同一目錄寫出繁體中文 `analysis.md`，列出重灌前要帶走的檔案與資料夾、要再確認的 App 資料，以及重灌後會重建、不必帶走的快取與依賴。檔案已在且沒有要求重掃時，直接分析即可。
 
 ## 測試
 
